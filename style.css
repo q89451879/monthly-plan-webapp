@@ -1,0 +1,538 @@
+/**
+ * style.css - 样式文件
+ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  background: #f5f5f5;
+}
+
+/* ========== 加载中 ========== */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #fff;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3370ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  margin-top: 16px;
+  color: #666;
+}
+
+/* ========== 登录提示 ========== */
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #f5f5f5;
+}
+
+.login-box {
+  background: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.login-box h2 {
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.login-box p {
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.login-box button {
+  padding: 10px 32px;
+  background: #3370ff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.login-box button:hover {
+  background: #2860e0;
+}
+
+/* ========== 主界面 ========== */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* 头部 */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.app-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-name {
+  color: #333;
+}
+
+.user-role {
+  font-size: 12px;
+  padding: 2px 8px;
+  background: #e6f7ff;
+  color: #1890ff;
+  border-radius: 10px;
+}
+
+/* 导航标签 */
+.nav-tabs {
+  display: flex;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.nav-tab {
+  flex: 1;
+  padding: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  position: relative;
+}
+
+.nav-tab.active {
+  color: #3370ff;
+  font-weight: 500;
+}
+
+.nav-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: #3370ff;
+}
+
+/* 主内容区 */
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+/* 页面 */
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+/* 筛选栏 */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+}
+
+.filter-btn {
+  padding: 6px 16px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.filter-btn.active {
+  background: #3370ff;
+  color: #fff;
+  border-color: #3370ff;
+}
+
+/* 列表容器 */
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 列表项 */
+.list-item {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.list-item:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.item-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.item-meta {
+  display: flex;
+  gap: 16px;
+  color: #666;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #999;
+  font-size: 12px;
+}
+
+/* 徽章 */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.badge-default {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.badge-warning {
+  background: #fff7e6;
+  color: #fa8c16;
+}
+
+.badge-success {
+  background: #f6ffed;
+  color: #52c41a;
+}
+
+.badge-danger {
+  background: #fff1f0;
+  color: #f5222d;
+}
+
+.badge-primary {
+  background: #e6f7ff;
+  color: #1890ff;
+}
+
+/* 进度条 */
+.progress-bar {
+  height: 6px;
+  background: #f5f5f5;
+  border-radius: 3px;
+  margin: 8px 0;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #52c41a;
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+
+/* 浮动按钮 */
+.fab-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 56px;
+  height: 56px;
+  background: #3370ff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(51, 112, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fab-btn:hover {
+  background: #2860e0;
+}
+
+/* 小按钮 */
+.btn-small {
+  padding: 4px 12px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #666;
+}
+
+.btn-small:hover {
+  border-color: #3370ff;
+  color: #3370ff;
+}
+
+.btn-small.btn-primary {
+  background: #3370ff;
+  color: #fff;
+  border-color: #3370ff;
+}
+
+.btn-small.btn-primary:hover {
+  background: #2860e0;
+}
+
+/* 空提示 */
+.empty-tip {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+}
+
+/* ========== 弹窗 ========== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.modal-header h3 {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #999;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+/* 表单 */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: #333;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3370ff;
+}
+
+.form-group input[type="range"] {
+  padding: 0;
+}
+
+.radio-group {
+  display: flex;
+  gap: 16px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.btn-cancel {
+  padding: 10px 24px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+}
+
+.btn-submit {
+  padding: 10px 24px;
+  background: #3370ff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-submit:hover {
+  background: #2860e0;
+}
+
+.btn-primary {
+  padding: 10px 24px;
+  background: #52c41a;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-primary:hover {
+  background: #45a015;
+}
+
+/* 详情样式 */
+.detail-section {
+  margin-bottom: 16px;
+}
+
+.detail-section label {
+  display: block;
+  color: #666;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.detail-section p {
+  color: #333;
+  font-size: 14px;
+}
+
+.detail-row {
+  display: flex;
+  gap: 16px;
+}
+
+.detail-row .detail-section {
+  flex: 1;
+}
+
+/* 响应式 */
+@media (max-width: 480px) {
+  .main-content {
+    padding: 12px;
+  }
+
+  .list-item {
+    padding: 12px;
+  }
+
+  .fab-btn {
+    right: 16px;
+    bottom: 16px;
+  }
+}

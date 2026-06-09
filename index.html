@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>部门月度计划管理</title>
+  <script src="https://lf1-cdn-tos.bytegoofy.com/goofy/lark/op/h5-js-sdk-1.5.28.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 加载中 -->
+    <div id="loading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>正在初始化...</p>
+    </div>
+
+    <!-- 登录提示 -->
+    <div id="login-tip" class="login-container" style="display: none;">
+      <div class="login-box">
+        <h2>部门月度计划管理</h2>
+        <p>请在飞书客户端中打开此应用</p>
+        <button onclick="location.reload()">重新加载</button>
+      </div>
+    </div>
+
+    <!-- 主界面 -->
+    <div id="main" class="main-container" style="display: none;">
+      <!-- 头部 -->
+      <header class="header">
+        <div class="header-left">
+          <span class="app-title">月度计划管理</span>
+        </div>
+        <div class="header-right">
+          <span id="user-name" class="user-name"></span>
+          <span id="user-role" class="user-role"></span>
+        </div>
+      </header>
+
+      <!-- 导航标签 -->
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-page="plans">计划列表</button>
+        <button class="nav-tab" data-page="tasks">我的任务</button>
+        <button class="nav-tab" data-page="approvals" id="nav-approvals">审批管理</button>
+      </nav>
+
+      <!-- 页面内容 -->
+      <main class="main-content">
+        <!-- 计划列表页 -->
+        <div id="page-plans" class="page active">
+          <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">全部</button>
+            <button class="filter-btn" data-filter="草稿">草稿</button>
+            <button class="filter-btn" data-filter="待审批">待审批</button>
+            <button class="filter-btn" data-filter="已批准">已批准</button>
+          </div>
+          <div id="plans-list" class="list-container">
+            <!-- 计划列表将在这里渲染 -->
+          </div>
+          <button id="btn-create-plan" class="fab-btn" style="display: none;">+</button>
+        </div>
+
+        <!-- 任务列表页 -->
+        <div id="page-tasks" class="page">
+          <div id="tasks-list" class="list-container">
+            <!-- 任务列表将在这里渲染 -->
+          </div>
+        </div>
+
+        <!-- 审批管理页 -->
+        <div id="page-approvals" class="page">
+          <div id="approvals-list" class="list-container">
+            <!-- 审批列表将在这里渲染 -->
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- 创建计划弹窗 -->
+    <div id="modal-create-plan" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>创建月度计划</h3>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="form-create-plan">
+            <div class="form-group">
+              <label>计划标题</label>
+              <input type="text" name="title" required placeholder="请输入计划标题">
+            </div>
+            <div class="form-group">
+              <label>计划内容</label>
+              <textarea name="content" rows="4" placeholder="请输入计划内容"></textarea>
+            </div>
+            <div class="form-group">
+              <label>年份</label>
+              <input type="number" name="year" id="plan-year" required>
+            </div>
+            <div class="form-group">
+              <label>月份</label>
+              <select name="month" id="plan-month" required>
+                <option value="1">1月</option>
+                <option value="2">2月</option>
+                <option value="3">3月</option>
+                <option value="4">4月</option>
+                <option value="5">5月</option>
+                <option value="6">6月</option>
+                <option value="7">7月</option>
+                <option value="8">8月</option>
+                <option value="9">9月</option>
+                <option value="10">10月</option>
+                <option value="11">11月</option>
+                <option value="12">12月</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-cancel">取消</button>
+              <button type="submit" class="btn-submit">创建</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- 计划详情弹窗 -->
+    <div id="modal-plan-detail" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>计划详情</h3>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body" id="plan-detail-content">
+          <!-- 详情内容将在这里渲染 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 审批弹窗 -->
+    <div id="modal-approval" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>审批计划</h3>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="form-approval">
+            <input type="hidden" name="planId">
+            <div class="form-group">
+              <label>审批结果</label>
+              <div class="radio-group">
+                <label><input type="radio" name="result" value="已通过" required> 通过</label>
+                <label><input type="radio" name="result" value="已驳回"> 驳回</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>审批意见</label>
+              <textarea name="comment" rows="3" placeholder="请输入审批意见"></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-cancel">取消</button>
+              <button type="submit" class="btn-submit">提交</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- 任务进度更新弹窗 -->
+    <div id="modal-task-progress" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>更新任务进度</h3>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="form-task-progress">
+            <input type="hidden" name="taskId">
+            <div class="form-group">
+              <label>进度 (%)</label>
+              <input type="range" name="progress" min="0" max="100" value="0">
+              <span id="progress-value">0%</span>
+            </div>
+            <div class="form-group">
+              <label>状态</label>
+              <select name="status">
+                <option value="未开始">未开始</option>
+                <option value="进行中">进行中</option>
+                <option value="已完成">已完成</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>备注</label>
+              <textarea name="remark" rows="2" placeholder="请输入备注"></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-cancel">取消</button>
+              <button type="submit" class="btn-submit">更新</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="bitable-api.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
